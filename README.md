@@ -3,6 +3,8 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/451cee5f44e0b138577a/maintainability)](https://codeclimate.com/github/Dfen90/frontend-project-11/maintainability)
 
+[![Test Coverage](https://api.codeclimate.com/v1/badges/451cee5f44e0b138577a/test_coverage)](https://codeclimate.com/github/Dfen90/frontend-project-11/test_coverage)
+
 ## Демо
 [Открыть RSS Reader](https://frontend-project-11-gj96n1v0s-dens-projects-bcea575d.vercel.app/)
 
