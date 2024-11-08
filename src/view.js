@@ -3,50 +3,64 @@ import i18n from "./i18n.js";
 
 const renderFeeds = (elements, feeds) => {
   const { feedsContainer } = elements;
-  const feedsList = feeds
-    .map(
-      (feed) => `
+  const feedsList = feeds.map((feed) => `
     <div class="card mb-3">
       <div class="card-body">
         <h2 class="card-title h4">${feed.title}</h2>
         <p class="card-text">${feed.description}</p>
       </div>
     </div>
-  `
-    )
-    .join("");
+  `).join('');
 
   feedsContainer.innerHTML = feedsList;
 };
 
-const renderPosts = (elements, posts) => {
+const renderPosts = (elements, { posts, uiState }) => {
   const { postsContainer } = elements;
-  const postsList = posts
-    .map(
-      (post) => `
-    <div class="card mb-2">
-      <div class="card-body">
-        <a href="${post.link}" target="_blank">${post.title}</a>
+  const postsList = posts.map((post) => {
+    const isVisited = uiState.visitedPostIds.has(post.id);
+    const fontWeight = isVisited ? 'fw-normal' : 'fw-bold';
+
+    return `
+      <div class="card mb-2">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <a href="${post.link}" class="${fontWeight}" data-id="${post.id}" target="_blank">${post.title}</a>
+          <button type="button" class="btn btn-primary btn-sm" data-id="${post.id}" data-bs-toggle="modal" data-bs-target="#modal">
+            Просмотр
+          </button>
+        </div>
       </div>
-    </div>
-  `
-    )
-    .join("");
+    `;
+  }).join('');
 
   postsContainer.innerHTML = postsList;
+};
+
+const renderModal = (elements, { posts, uiState }) => {
+  const { modal } = elements;
+  const post = posts.find(({ id }) => id === uiState.modalPostId);
+  if (!post) return;
+
+  const titleEl = modal.querySelector('.modal-title');
+  const bodyEl = modal.querySelector('.modal-body');
+  const linkEl = modal.querySelector('.full-article');
+
+  titleEl.textContent = post.title;
+  bodyEl.textContent = post.description;
+  linkEl.href = post.link;
 };
 
 const renderErrors = (elements, error) => {
   const { input, feedback } = elements;
 
   if (error) {
-    input.classList.add("is-invalid");
-    feedback.classList.add("text-danger");
-    feedback.textContent = i18n.t(error);
+    input.classList.add('is-invalid');
+    feedback.classList.add('text-danger');
+    feedback.textContent = error;
   } else {
-    input.classList.remove("is-invalid");
-    feedback.classList.remove("text-danger");
-    feedback.textContent = "";
+    input.classList.remove('is-invalid');
+    feedback.classList.remove('text-danger');
+    feedback.textContent = '';
   }
 };
 
@@ -54,11 +68,11 @@ const handleProcessState = (elements, processState) => {
   const { submit, input } = elements;
 
   switch (processState) {
-    case "filling":
+    case 'filling':
       submit.disabled = false;
       input.readOnly = false;
       break;
-    case "sending":
+    case 'sending':
       submit.disabled = true;
       input.readOnly = true;
       break;
@@ -67,27 +81,29 @@ const handleProcessState = (elements, processState) => {
   }
 };
 
-const initView = (state, elements) => {
+export default (state, elements) => {
   const watchedState = onChange(state, (path, value) => {
     switch (path) {
-      case "form.error":
+      case 'form.error':
         renderErrors(elements, value);
         break;
-      case "form.processState":
+      case 'form.processState':
         handleProcessState(elements, value);
         break;
-      case "feeds":
+      case 'feeds':
         renderFeeds(elements, value);
         break;
-      case "posts":
-        renderPosts(elements, value);
+      case 'posts':
+      case 'uiState.visitedPostIds':
+        renderPosts(elements, state);
+        break;
+      case 'uiState.modalPostId':
+        renderModal(elements, state);
         break;
       default:
         break;
     }
   });
-
+  
   return watchedState;
 };
-
-export default initView;

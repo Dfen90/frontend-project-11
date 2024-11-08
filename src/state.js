@@ -6,4 +6,8 @@ export default {
   feeds: [],
   posts: [],
   urls: [],
+  uiState: {
+    visitedPostIds: new Set(),
+    modalPostId: null,
+  },
 };

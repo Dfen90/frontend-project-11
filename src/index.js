@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Modal } from "bootstrap";
 import loadRSS from "./loader.js";
 import parseRSS from "./parser.js";
 import validate from "./validator.js";
@@ -45,6 +46,10 @@ const app = () => {
     feeds: [],
     posts: [],
     urls: [],
+    uiState: {
+      visitedPostIds: new Set(),
+      modalPostId: null,
+    },
   };
 
   const elements = {
@@ -54,9 +59,22 @@ const app = () => {
     submit: document.querySelector(".rss-form button"),
     feedsContainer: document.querySelector(".feeds"),
     postsContainer: document.querySelector(".posts"),
+    modal: document.querySelector("#modal"),
   };
 
   const watchedState = initView(state, elements);
+
+  // Обработчик клика по постам
+  elements.postsContainer.addEventListener("click", (e) => {
+    const postId = e.target.dataset.id;
+    if (!postId) return;
+
+    watchedState.uiState.visitedPostIds.add(postId);
+
+    if (e.target.tagName === "BUTTON") {
+      watchedState.uiState.modalPostId = postId;
+    }
+  });
 
   elements.form.addEventListener("submit", (e) => {
     e.preventDefault();
