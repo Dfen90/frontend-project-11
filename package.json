@@ -7,7 +7,8 @@
     "test": "npx playwright test",
     "test-coverage": "nyc --reporter=lcov npm test",
     "build": "webpack --mode production",
-    "dev": "webpack serve --mode development"
+    "dev": "webpack serve --mode development",
+    "start": "webpack serve"
   },
   "dependencies": {
     "axios": "^0.24.0",
