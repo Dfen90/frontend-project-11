@@ -82,6 +82,11 @@ const app = () => {
     const formData = new FormData(e.target);
     const url = formData.get("url").trim();
 
+    if (!url) {
+      watchedState.form.error = 'errors.empty';
+      return;
+    }
+
     watchedState.form.processState = "sending";
     watchedState.form.error = null;
     watchedState.form.success = null;
