@@ -1,1 +1,51 @@
-<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RSS агрегатор</title><script defer="defer" src="main.js"></script></head><body class="d-flex flex-column min-vh-100"><div class="container-fluid p-5"><div class="row"><div class="col-md-10 col-lg-8 mx-auto"><h1 class="display-3 mb-0">RSS агрегатор</h1><p class="lead">Начните читать RSS сегодня!</p><form class="rss-form"><div class="row"><div class="col"><input class="form-control form-control-lg" placeholder="ссылка RSS" required></div><div class="col-auto"><button type="submit" class="btn btn-lg btn-primary">Добавить</button></div></div></form></div></div></div></body></html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSS Reader</title>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-lg-8 mx-auto">
+        <h1 class="display-3 mb-0">RSS агрегатор</h1>
+        <p class="lead">Начните читать RSS сегодня!</p>
+        <form class="rss-form">
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="ссылка RSS" name="url" aria-label="url" required>
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+          </div>
+        </form>
+        <p class="feedback m-0 position-relative small"></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-10 col-lg-8 mx-auto feeds"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-10 col-lg-8 mx-auto posts"></div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <a class="btn btn-primary full-article" href="#" target="_blank">Читать полностью</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

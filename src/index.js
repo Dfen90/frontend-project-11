@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal } from "bootstrap";
+import i18n from "./i18n.js";
 import loadRSS from "./loader.js";
 import parseRSS from "./parser.js";
 import validate from "./validator.js";
@@ -42,6 +43,7 @@ const app = () => {
     form: {
       processState: "filling",
       error: null,
+      success: null,
     },
     feeds: [],
     posts: [],
@@ -64,7 +66,6 @@ const app = () => {
 
   const watchedState = initView(state, elements);
 
-  // Обработчик клика по постам
   elements.postsContainer.addEventListener("click", (e) => {
     const postId = e.target.dataset.id;
     if (!postId) return;
@@ -83,8 +84,9 @@ const app = () => {
 
     watchedState.form.processState = "sending";
     watchedState.form.error = null;
+    watchedState.form.success = null;
 
-    validate(url, state.urls)
+    validate(url, Object.values(state.urls))
       .then(() => loadRSS(url))
       .then((response) => {
         const { feed, items } = parseRSS(response.data.contents);
@@ -102,9 +104,12 @@ const app = () => {
         watchedState.urls[feedId] = url;
 
         watchedState.form.processState = "filling";
+        watchedState.form.success = "success";
         e.target.reset();
 
-        setTimeout(() => updatePosts(watchedState), 5000);
+        if (watchedState.feeds.length === 1) {
+          updatePosts(watchedState);
+        }
       })
       .catch((error) => {
         watchedState.form.processState = "filling";

@@ -1,13 +1,27 @@
 import i18next from 'i18next';
-import ru from './locales/ru.js';
 
-const i18n = i18next.createInstance();
-i18n.init({
+const resources = {
+  ru: {
+    translation: {
+      success: 'RSS успешно загружен',
+      errors: {
+        empty: 'Не должно быть пустым',
+        invalid: 'Ссылка должна быть валидным URL',
+        exists: 'RSS уже существует',
+        notRSS: 'Ресурс не содержит валидный RSS',
+        network: 'Ошибка сети'
+      },
+      buttons: {
+        preview: 'Просмотр'
+      }
+    }
+  }
+};
+
+i18next.init({
   lng: 'ru',
   debug: false,
-  resources: {
-    ru,
-  },
+  resources,
 });
 
-export default i18n;
+export default i18next;
